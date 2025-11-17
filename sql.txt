@@ -1,6 +1,5 @@
--- database/db.artigos.sql
+-- Cole isso no SQL do phpMyAdmin do Laragon
 
-CREATE DATABASE IF NOT EXISTS artigos_antigos;
 USE artigos_antigos;
 
 -- Tabela de usuários
