@@ -1,6 +1,4 @@
 <?php
-// header.php
-
 session_start();
 
 function isLoggedIn() {
@@ -9,20 +7,17 @@ function isLoggedIn() {
 
 function redirectIfNotLoggedIn() {
     if (!isLoggedIn()) {
-        header("Location: ../usuario/UsuarioForm.php"); // caminho para login
+        header("Location: /ArtigosAntigos/site/usuario/UsuarioForm.php"); // absoluto do localhost
         exit();
     }
 }
 
-function getUsuarioId() {
-    return $_SESSION['usuario_id'] ?? null;
-}
-
 function logout() {
     session_destroy();
-    header("Location: ../usuario/UsuarioForm.php");
+    header("Location: /ArtigosAntigos/site/usuario/UsuarioForm.php"); // absoluto do localhost
     exit();
 }
+
 
 $title = $title ?? 'Sistema de Objetos Antigos';
 ?>
@@ -43,14 +38,14 @@ $title = $title ?? 'Sistema de Objetos Antigos';
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="../index.php">
+        <a class="navbar-brand" href="/ArtigosAntigos/index.php">
             <i class="fas fa-scroll"></i> Objetos Antigos
         </a>
         <div class="navbar-nav ms-auto">
-            <a class="nav-link" href="../index.php"><i class="fas fa-home"></i> Início</a>
-            <a class="nav-link" href="post/PostList.php"><i class="fas fa-newspaper"></i> Objetos</a>
-            <a class="nav-link" href="categoria/CategoriaList.php"><i class="fas fa-tags"></i> Categorias</a>
-            <a class="nav-link" href="usuario/UsuarioList.php"><i class="fas fa-users"></i> Usuários</a>
+            <a class="nav-link" href="/ArtigosAntigos/index.php"><i class="fas fa-home"></i> Início</a>
+            <a class="nav-link" href="/ArtigosAntigos/site/admin/post/PostList.php"><i class="fas fa-newspaper"></i> Objetos</a>
+            <a class="nav-link" href="/ArtigosAntigos/site/admin/categoria/CategoriaList.php"><i class="fas fa-tags"></i> Categorias</a>
+            <a class="nav-link" href="/ArtigosAntigos/site/admin/usuario/UsuarioList.php"><i class="fas fa-users"></i> Usuários</a>
             <a class="nav-link" href="?logout=true"><i class="fas fa-sign-out-alt"></i> Sair</a>
         </div>
     </div>
@@ -58,7 +53,6 @@ $title = $title ?? 'Sistema de Objetos Antigos';
 
 <div class="container main-container">
 <?php
-// logout via GET
 if (isset($_GET['logout'])) {
     logout();
 }
