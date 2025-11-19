@@ -2,6 +2,7 @@
 require_once __DIR__ . '/UsuarioControle.php';
 require_once __DIR__ . '/../admin/header.php';
 
+
 redirectIfNotLoggedIn();
 
 $acao = $_GET['acao'] ?? 'criar';

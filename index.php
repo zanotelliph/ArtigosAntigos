@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/site/database/db.class.php';
 require_once __DIR__ . '/site/admin/header.php';
+require_once __DIR__ . '/site/admin/footer.php';
+
 
 redirectIfNotLoggedIn();
 

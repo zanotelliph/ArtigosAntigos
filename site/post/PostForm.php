@@ -1,7 +1,8 @@
 <?php
 require_once __DIR__ . '/PostControle.php';
-require_once __DIR__ . '/../categoria/CategoriaControle.php';
 require_once __DIR__ . '/../admin/header.php';
+require_once __DIR__ . '/../categoria/CategoriaControle.php';
+
 
 redirectIfNotLoggedIn();
 

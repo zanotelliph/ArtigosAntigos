@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../database/db.class.php';
 
+
 class Usuario {
     protected $table = 'usuarios';
     protected $db;

@@ -2,6 +2,7 @@
 require_once __DIR__ . '/UsuarioControle.php';
 require_once __DIR__ . '/../admin/header.php';
 
+
 redirectIfNotLoggedIn();
 
 $usuarioModel = new Usuario();
