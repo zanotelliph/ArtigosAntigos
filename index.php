@@ -1,7 +1,4 @@
-    <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
+<?php
 require_once __DIR__ . '/site/database/db.class.php';
 require_once __DIR__ . '/site/admin/header.php';
 
@@ -16,10 +13,9 @@ $totalUsuarios = $conn->query("SELECT COUNT(*) FROM usuarios")->fetchColumn();
 ?>
 
 <h2>Dashboard - Sistema de Objetos Antigos</h2>
-
 <div class="row mt-4">
     <div class="col-md-4">
-        <div class="card text-white bg-primary">
+        <div class="card text-white bg-primary mb-3">
             <div class="card-body">
                 <h5 class="card-title"><i class="fas fa-newspaper"></i> Objetos</h5>
                 <h2><?php echo $totalPosts; ?></h2>
@@ -28,7 +24,7 @@ $totalUsuarios = $conn->query("SELECT COUNT(*) FROM usuarios")->fetchColumn();
         </div>
     </div>
     <div class="col-md-4">
-        <div class="card text-white bg-success">
+        <div class="card text-white bg-success mb-3">
             <div class="card-body">
                 <h5 class="card-title"><i class="fas fa-tags"></i> Categorias</h5>
                 <h2><?php echo $totalCategorias; ?></h2>
@@ -37,7 +33,7 @@ $totalUsuarios = $conn->query("SELECT COUNT(*) FROM usuarios")->fetchColumn();
         </div>
     </div>
     <div class="col-md-4">
-        <div class="card text-white bg-warning">
+        <div class="card text-white bg-warning mb-3">
             <div class="card-body">
                 <h5 class="card-title"><i class="fas fa-users"></i> Usuários</h5>
                 <h2><?php echo $totalUsuarios; ?></h2>
@@ -47,6 +43,4 @@ $totalUsuarios = $conn->query("SELECT COUNT(*) FROM usuarios")->fetchColumn();
     </div>
 </div>
 
-<?php
-require_once __DIR__ . '/site/admin/footer.php';
-?>
+<?php require_once __DIR__ . '/site/admin/footer.php'; ?>

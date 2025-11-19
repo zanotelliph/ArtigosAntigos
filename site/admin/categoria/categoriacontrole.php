@@ -1,46 +1,43 @@
 <?php
-// categoria/CategoriaControle.php
+require_once __DIR__ . '/../database/db.class.php';
 
-require_once __DIR__ . '/../model/CategoriaModel.php';
-
-
-class Categoria extends Model {
+class Categoria {
     protected $table = 'categorias';
+    protected $db;
 
     public function __construct() {
-        parent::__construct();
+        $database = new Database();
+        $this->db = $database->getConnection();
     }
 
     public function criar($dados) {
-        $query = "INSERT INTO " . $this->table . " (nome, descricao) VALUES (:nome, :descricao)";
+        $query = "INSERT INTO {$this->table} (nome, descricao) VALUES (:nome, :descricao)";
         $stmt = $this->db->prepare($query);
         return $stmt->execute($dados);
     }
 
     public function atualizar($id, $dados) {
-        $query = "UPDATE " . $this->table . " SET nome = :nome, descricao = :descricao WHERE id = :id";
         $dados['id'] = $id;
+        $query = "UPDATE {$this->table} SET nome = :nome, descricao = :descricao WHERE id = :id";
         $stmt = $this->db->prepare($query);
         return $stmt->execute($dados);
     }
 
-    public function buscar($termo) {
-        $query = "SELECT * FROM " . $this->table . " WHERE nome LIKE :termo OR descricao LIKE :termo";
+    public function getAll() {
+        $query = "SELECT * FROM {$this->table} ORDER BY id DESC";
         $stmt = $this->db->prepare($query);
-        $stmt->execute(['termo' => "%$termo%"]);
+        $stmt->execute();
         return $stmt;
     }
 
     public function getById($id) {
-        $query = "SELECT * FROM " . $this->table . " WHERE id = ?";
-        $stmt = $this->db->prepare($query);
+        $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE id = ?");
         $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function delete($id) {
-        $query = "DELETE FROM " . $this->table . " WHERE id = ?";
-        $stmt = $this->db->prepare($query);
+        $stmt = $this->db->prepare("DELETE FROM {$this->table} WHERE id = ?");
         return $stmt->execute([$id]);
     }
 }

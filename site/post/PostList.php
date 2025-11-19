@@ -1,12 +1,10 @@
 <?php
-require_once __DIR__ . '/UsuarioControle.php';
-require_once __DIR__ . '/../header.php';
-require_once __DIR__ . '/../categoria/CategoriaControle.php';
+require_once __DIR__ . '/PostControle.php';
+require_once __DIR__ . '/../admin/header.php';
 
 redirectIfNotLoggedIn();
 
 $postModel = new Post();
-$categoriaModel = new Categoria();
 
 if (isset($_GET['excluir'])) {
     $postModel->delete($_GET['excluir']);
@@ -24,11 +22,11 @@ $posts = isset($_GET['buscar'])
     <div class="alert alert-success"><?php echo $_GET['mensagem']; ?></div>
 <?php endif; ?>
 
-<a href="?acao=criar" class="btn btn-primary mb-3">Novo Objeto</a>
+<a href="PostForm.php" class="btn btn-primary mb-3">Novo Objeto</a>
 
 <form method="GET" class="mb-3">
     <div class="input-group">
-        <input type="text" name="termo" class="form-control" placeholder="Buscar por nome ou ano..." value="<?php echo $_GET['termo'] ?? ''; ?>">
+        <input type="text" name="termo" class="form-control" placeholder="Buscar..." value="<?php echo $_GET['termo'] ?? ''; ?>">
         <button type="submit" name="buscar" class="btn btn-secondary">Buscar</button>
     </div>
 </form>
@@ -37,9 +35,10 @@ $posts = isset($_GET['buscar'])
     <thead>
         <tr>
             <th>ID</th>
-            <th>Nome</th>
-            <th>Ano</th>
+            <th>Título</th>
             <th>Categoria</th>
+            <th>Autor</th>
+            <th>Data</th>
             <th>Ações</th>
         </tr>
     </thead>
@@ -47,9 +46,10 @@ $posts = isset($_GET['buscar'])
         <?php while ($post = $posts->fetch(PDO::FETCH_ASSOC)): ?>
         <tr>
             <td><?php echo $post['id']; ?></td>
-            <td><?php echo htmlspecialchars($post['nome']); ?></td>
-            <td><?php echo $post['ano_fabricacao']; ?></td>
+            <td><?php echo htmlspecialchars($post['titulo']); ?></td>
             <td><?php echo $post['categoria_nome'] ?? 'Sem categoria'; ?></td>
+            <td><?php echo $post['autor']; ?></td>
+            <td><?php echo $post['data_publicacao']; ?></td>
             <td>
                 <a href="PostForm.php?id=<?php echo $post['id']; ?>" class="btn btn-warning btn-sm">Editar</a>
                 <a href="?excluir=<?php echo $post['id']; ?>" onclick="return confirm('Tem certeza?')" class="btn btn-danger btn-sm">Excluir</a>
@@ -59,4 +59,4 @@ $posts = isset($_GET['buscar'])
     </tbody>
 </table>
 
-<?php require_once '../site/admin/footer.php'; ?>
+<?php require_once __DIR__ . '/../admin/footer.php'; ?>
