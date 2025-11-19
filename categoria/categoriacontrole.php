@@ -1,7 +1,8 @@
 <?php
 // categoria/CategoriaControle.php
 
-require_once '../site/admin/db.class.php';
+require_once __DIR__ . '/../model/CategoriaModel.php';
+
 
 class Categoria extends Model {
     protected $table = 'categorias';

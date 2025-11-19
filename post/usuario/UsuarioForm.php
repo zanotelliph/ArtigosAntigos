@@ -1,11 +1,11 @@
 <?php
-// usuario/UsuarioForm.php (Tela de Login)
+
 
 require_once 'UsuarioControle.php';
 
 session_start();
 
-// Se já estiver logado, redireciona
+
 if (isset($_SESSION['usuario_id'])) {
     header("Location: ../site/admin/index.php");
     exit();

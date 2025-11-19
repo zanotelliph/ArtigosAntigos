@@ -1,5 +1,5 @@
 <?php
-// usuario/UsuarioList.php
+
 
 require_once 'UsuarioControle.php';
 require_once '../site/admin/header.php';

@@ -1,7 +1,8 @@
 <?php
-// usuario/UsuarioControle.php
 
-require_once '../site/admin/db.class.php';
+
+require_once __DIR__ . '/../model/UsuarioModel.php';
+
 
 class Usuario extends Model {
     protected $table = 'usuarios';

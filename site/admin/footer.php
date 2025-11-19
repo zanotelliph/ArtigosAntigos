@@ -1,5 +1,5 @@
 <?php
-// site/admin/footer.php
+
 ?>
     </div>
 

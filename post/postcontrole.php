@@ -1,7 +1,8 @@
 <?php
-// post/PostControle.php
 
-require_once '../site/admin/db.class.php';
+
+require_once __DIR__ . '/../model/PostModel.php';
+
 
 class Post extends Model {
     protected $table = 'artigos';

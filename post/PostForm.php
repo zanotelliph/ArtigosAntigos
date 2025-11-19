@@ -1,98 +1,89 @@
 <?php
-// post/PostForm.php
+require_once __DIR__ . '/../../../../db.class.php';
+require_once __DIR__ . '/../../../../header.php';
 
-require_once 'PostControle.php';
-require_once '../site/admin/header.php';
-require_once '../categoria/CategoriaControle.php';
+$pdo = DB::getInstance();
+$acao = $_GET['acao'] ?? '';
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
-redirectIfNotLoggedIn();
 
-$postModel = new Post();
-$categoriaModel = new Categoria();
-
-$id = $_GET['id'] ?? null;
-$post = [];
-$tituloPagina = 'Novo Artigo';
-
-if ($id) {
-    $post = $postModel->getById($id);
-    $tituloPagina = 'Editar Artigo';
+if ($acao === 'excluir' && $id) {
+    $stmt = $pdo->prepare("DELETE FROM post WHERE id = :id");
+    $stmt->execute([':id' => $id]);
+    header('Location: PostList.php');
+    exit;
 }
 
-$categorias = $categoriaModel->getAll();
 
+$cats = $pdo->query("SELECT id, nome FROM categorias ORDER BY nome")->fetchAll();
+$autores = $pdo->query("SELECT id, nome FROM autores ORDER BY nome")->fetchAll();
+
+$mensagem = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $dados = [
-        'titulo' => $_POST['titulo'],
-        'conteudo' => $_POST['conteudo'],
-        'data_publicacao' => $_POST['data_publicacao'],
-        'autor' => $_POST['autor'],
-        'categoria_id' => $_POST['categoria_id'],
-        'usuario_id' => $_SESSION['usuario_id']
-    ];
+    $titulo = trim($_POST['titulo']);
+    $ano = (int)($_POST['ano'] ?? 0);
+    $categoria_id = !empty($_POST['categoria_id']) ? (int)$_POST['categoria_id'] : null;
+    $descricao = trim($_POST['descricao']);
+    $autor_id = !empty($_POST['autor_id']) ? (int)$_POST['autor_id'] : null;
 
-    if ($id) {
-        if ($postModel->atualizar($id, $dados)) {
-            header("Location: PostList.php?mensagem=Artigo atualizado com sucesso!");
-            exit();
-        }
+    if (empty($titulo)) {
+        $mensagem = 'Título é obrigatório.';
     } else {
-        if ($postModel->criar($dados)) {
-            header("Location: PostList.php?mensagem=Artigo criado com sucesso!");
-            exit();
+        if ($id) {
+            $stmt = $pdo->prepare("UPDATE post SET titulo=:titulo, ano=:ano, categoria_id=:cid, descricao=:descricao, autor_id=:aid WHERE id=:id");
+            $stmt->execute([':titulo'=>$titulo,':ano'=>$ano,':cid'=>$categoria_id,':descricao'=>$descricao,':aid'=>$autor_id,':id'=>$id]);
+        } else {
+            $stmt = $pdo->prepare("INSERT INTO post (titulo, ano, categoria_id, descricao, autor_id) VALUES (:titulo,:ano,:cid,:descricao,:aid)");
+            $stmt->execute([':titulo'=>$titulo,':ano'=>$ano,':cid'=>$categoria_id,':descricao'=>$descricao,':aid'=>$autor_id]);
         }
+        header('Location: PostList.php');
+        exit;
     }
 }
+
+$post = null;
+if ($id) {
+    $stmt = $pdo->prepare("SELECT * FROM post WHERE id = :id LIMIT 1");
+    $stmt->execute([':id' => $id]);
+    $post = $stmt->fetch();
+}
 ?>
-
-<h2><?php echo $tituloPagina; ?></h2>
-
-<form method="POST" class="mt-3">
+<div class="mt-4">
+  <h3><?= $id ? 'Editar Artigo' : 'Novo Artigo' ?></h3>
+  <?php if ($mensagem): ?><div class="alert alert-danger"><?=$mensagem?></div><?php endif; ?>
+  <form method="post">
     <div class="mb-3">
-        <label for="titulo" class="form-label">Título</label>
-        <input type="text" class="form-control" id="titulo" name="titulo" required
-               value="<?php echo $post['titulo'] ?? ''; ?>">
+      <label class="form-label">Título</label>
+      <input type="text" name="titulo" class="form-control" required value="<?=htmlspecialchars($post['titulo'] ?? '')?>">
     </div>
-    
     <div class="mb-3">
-        <label for="conteudo" class="form-label">Conteúdo</label>
-        <textarea class="form-control" id="conteudo" name="conteudo" rows="6" required><?php echo $post['conteudo'] ?? ''; ?></textarea>
+      <label class="form-label">Ano</label>
+      <input type="number" name="ano" class="form-control" value="<?=htmlspecialchars($post['ano'] ?? '')?>">
     </div>
-    
-    <div class="row">
-        <div class="col-md-6">
-            <div class="mb-3">
-                <label for="autor" class="form-label">Autor</label>
-                <input type="text" class="form-control" id="autor" name="autor" required
-                       value="<?php echo $post['autor'] ?? ''; ?>">
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="mb-3">
-                <label for="data_publicacao" class="form-label">Data de Publicação</label>
-                <input type="date" class="form-control" id="data_publicacao" name="data_publicacao" required
-                       value="<?php echo $post['data_publicacao'] ?? ''; ?>">
-            </div>
-        </div>
-    </div>
-    
     <div class="mb-3">
-        <label for="categoria_id" class="form-label">Categoria</label>
-        <select class="form-control" id="categoria_id" name="categoria_id">
-            <option value="">Selecione uma categoria</option>
-            <?php while ($categoria = $categorias->fetch(PDO::FETCH_ASSOC)): ?>
-                <option value="<?php echo $categoria['id']; ?>" 
-                    <?php echo ($post['categoria_id'] ?? '') == $categoria['id'] ? 'selected' : ''; ?>>
-                    <?php echo htmlspecialchars($categoria['nome']); ?>
-                </option>
-            <?php endwhile; ?>
-        </select>
+      <label class="form-label">Categoria</label>
+      <select name="categoria_id" class="form-select">
+        <option value="">-- Sem categoria --</option>
+        <?php foreach ($cats as $c): ?>
+          <option value="<?=$c['id']?>" <?=isset($post['categoria_id']) && $post['categoria_id'] == $c['id'] ? 'selected' : ''?>><?=htmlspecialchars($c['nome'])?></option>
+        <?php endforeach; ?>
+      </select>
     </div>
-    
-    <button type="submit" class="btn btn-primary">Salvar</button>
-    <a href="PostList.php" class="btn btn-secondary">Cancelar</a>
-</form>
-
-<?php
-require_once '../site/admin/footer.php';
-?>
+    <div class="mb-3">
+      <label class="form-label">Autor</label>
+      <select name="autor_id" class="form-select">
+        <option value="">-- Sem autor --</option>
+        <?php foreach ($autores as $a): ?>
+          <option value="<?=$a['id']?>" <?=isset($post['autor_id']) && $post['autor_id'] == $a['id'] ? 'selected' : ''?>><?=htmlspecialchars($a['nome'])?></option>
+        <?php endforeach; ?>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Descrição</label>
+      <textarea name="descricao" class="form-control" rows="6"><?=htmlspecialchars($post['descricao'] ?? '')?></textarea>
+    </div>
+    <button class="btn btn-success" type="submit">Salvar</button>
+    <a class="btn btn-secondary" href="PostList.php">Cancelar</a>
+  </form>
+</div>
+<?php require_once __DIR__ . '/../../../../footer.php'; ?>

@@ -1,8 +1,8 @@
 <?php
-// site/admin/header.php
+
 session_start();
 
-// Funções de autenticação
+
 function isLoggedIn() {
     return isset($_SESSION['usuario_id']);
 }
@@ -24,7 +24,7 @@ function logout() {
     exit();
 }
 
-// Header HTML
+
 if (!isset($title)) {
     $title = 'Sistema de Artigos Antigos';
 }

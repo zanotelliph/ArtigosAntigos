@@ -1,5 +1,5 @@
 <?php
-// categoria/CategoriaList.php
+
 
 require_once 'CategoriaControle.php';
 require_once '../site/admin/header.php';

@@ -1,12 +1,12 @@
 <?php
-// site/admin/index.php
+
 
 require_once 'db.class.php';
 require_once 'header.php';
 
 redirectIfNotLoggedIn();
 
-// Model base
+
 class Model {
     protected $db;
     protected $table;
@@ -24,7 +24,7 @@ class Model {
     }
 }
 
-// Carregar contagens
+
 $database = new Database();
 $conn = $database->getConnection();
 
