@@ -1,8 +1,8 @@
 <?php
 // usuario/UsuarioList.php
 
-require_once 'UsuarioControle.php';
-require_once '../site/admin/header.php';
+require_once __DIR__ . '/UsuarioControle.php';
+require_once __DIR__ . '/../admin/header.php';
 
 redirectIfNotLoggedIn();
 
@@ -11,15 +11,16 @@ $acao = $_GET['acao'] ?? 'listar';
 $mensagem = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // 🔹 Agora inclui a senha (em branco caso não preencha)
     $dados = [
         'nome' => $_POST['nome'],
         'telefone' => $_POST['telefone'],
         'email' => $_POST['email'],
-        'login' => $_POST['login']
+        'login' => $_POST['login'],
+        'senha' => $_POST['senha'] ?? '' // 👈 importante!
     ];
 
     if ($acao === 'criar') {
-        $dados['senha'] = $_POST['senha'];
         if ($usuarioModel->criar($dados)) {
             $mensagem = "Usuário criado com sucesso!";
             $acao = 'listar';
@@ -51,7 +52,7 @@ if (isset($_GET['buscar'])) {
 
 if ($acao === 'listar'):
 ?>
-    <h2>Gerenciar Usuários</h2>
+    <h2>Gerenciar Usuários do Sistema</h2>
 
     <?php if ($mensagem): ?>
         <div class="alert alert-info"><?php echo $mensagem; ?></div>
@@ -163,6 +164,12 @@ if ($acao === 'listar'):
             <label for="senha" class="form-label">Senha</label>
             <input type="password" class="form-control" id="senha" name="senha" required>
         </div>
+        <?php else: ?>
+        <div class="mb-3">
+            <label for="senha" class="form-label">Nova senha (opcional)</label>
+            <input type="password" class="form-control" id="senha" name="senha">
+            <small class="form-text text-muted">Se deixado vazio, manterá a senha atual.</small>
+        </div>
         <?php endif; ?>
         
         <button type="submit" class="btn btn-primary">Salvar</button>
@@ -171,5 +178,5 @@ if ($acao === 'listar'):
 <?php endif; ?>
 
 <?php
-require_once '../site/admin/footer.php';
+require_once __DIR__ . '/../admin/footer.php';
 ?>

@@ -1,44 +1,40 @@
 <?php
 
-require_once 'PostControle.php';
-require_once '../site/admin/header.php';
-require_once '../categoria/CategoriaControle.php';
+require_once __DIR__ . '/PostControle.php';
+require_once __DIR__ . '/../header.php';
+require_once __DIR__ . '/../categoria/CategoriaControle.php';
 
 redirectIfNotLoggedIn();
 
-$postModel = new Post(); 
+$postModel = new Post();
 $categoriaModel = new Categoria();
 
 $id = $_GET['id'] ?? null;
 $post = [];
-$tituloPagina = 'Cadastrar Objeto Antigo';
+$tituloPagina = $id ? 'Editar Objeto' : 'Cadastrar Objeto';
 
 if ($id) {
     $post = $postModel->getById($id);
-    $tituloPagina = 'Editar Objeto Antigo';
 }
 
 $categorias = $categoriaModel->getAll();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $dados = [
-        'nome' => $_POST['nome'], // CORRETO agora
+        'nome' => $_POST['nome'],
         'ano_fabricacao' => $_POST['ano_fabricacao'],
         'categoria_id' => $_POST['categoria_id'],
-        'usuario_id' => $_SESSION['usuario_id'] ?? 1 // garante que sempre tenha valor
+        'usuario_id' => $_SESSION['usuario_id'] ?? 1
     ];
 
     if ($id) {
-        if ($postModel->atualizar($id, $dados)) {
-            header("Location: PostList.php?mensagem=Objeto atualizado com sucesso!");
-            exit();
-        }
+        $postModel->atualizar($id, $dados);
+        header("Location: PostList.php?mensagem=Objeto atualizado com sucesso!");
     } else {
-        if ($postModel->criar($dados)) {
-            header("Location: PostList.php?mensagem=Objeto criado com sucesso!");
-            exit();
-        }
+        $postModel->criar($dados);
+        header("Location: PostList.php?mensagem=Objeto criado com sucesso!");
     }
+    exit();
 }
 ?>
 
@@ -61,8 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label for="categoria_id" class="form-label">Categoria</label>
         <select class="form-control" id="categoria_id" name="categoria_id" required>
             <option value="">Selecione uma categoria</option>
-            <?php 
-            while ($categoria = $categorias->fetch(PDO::FETCH_ASSOC)): ?>
+            <?php while ($categoria = $categorias->fetch(PDO::FETCH_ASSOC)): ?>
                 <option value="<?php echo $categoria['id']; ?>" 
                     <?php echo ($post['categoria_id'] ?? '') == $categoria['id'] ? 'selected' : ''; ?>>
                     <?php echo htmlspecialchars($categoria['nome']); ?>
@@ -75,6 +70,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <a href="PostList.php" class="btn btn-secondary">Cancelar</a>
 </form>
 
-<?php
-require_once '../site/admin/footer.php';
-?>
+<?php require_once '../site/admin/footer.php'; ?>

@@ -1,7 +1,5 @@
 <?php
-// usuario/UsuarioControle.php
-
-require_once '../site/admin/db.class.php';
+require_once __DIR__ . '/../database/db.class.php';
 
 class Usuario extends Model {
     protected $table = 'usuarios';
@@ -22,10 +20,26 @@ class Usuario extends Model {
     }
 
     public function atualizar($id, $dados) {
-        $query = "UPDATE " . $this->table . " 
-                 SET nome = :nome, telefone = :telefone, email = :email, login = :login 
-                 WHERE id = :id";
-        
+        // 🔹 Se o campo senha for preenchido, atualiza também a senha
+        if (!empty($dados['senha'])) {
+            $query = "UPDATE {$this->table} 
+                      SET nome = :nome, telefone = :telefone, email = :email, login = :login, 
+                          senha = :senha
+                      WHERE id = :id";
+
+            // Criptografa a nova senha
+            $dados['senha'] = password_hash($dados['senha'], PASSWORD_DEFAULT);
+
+        } else {
+            // 🔹 Se a senha estiver vazia, mantém a senha atual
+            $query = "UPDATE {$this->table} 
+                      SET nome = :nome, telefone = :telefone, email = :email, login = :login
+                      WHERE id = :id";
+
+            // Remove para não interferir no execute
+            unset($dados['senha']);
+        }
+
         $dados['id'] = $id;
         $stmt = $this->db->prepare($query);
         return $stmt->execute($dados);

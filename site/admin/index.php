@@ -1,7 +1,7 @@
 <?php
 // site/admin/index.php
 
-require_once 'db.class.php';
+require_once __DIR__ . '/db.class.php';
 require_once 'header.php';
 
 redirectIfNotLoggedIn();
