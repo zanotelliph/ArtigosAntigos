@@ -1,7 +1,7 @@
--- database/db.artigos.sql
+-- database/db.objetoss.sql
 
-CREATE DATABASE IF NOT EXISTS artigos_antigos;
-USE artigos_antigos;
+CREATE DATABASE IF NOT EXISTS objetos_antigos;
+USE objetos_antigos;
 
 -- Tabela de usuários
 CREATE TABLE usuarios (
@@ -22,8 +22,8 @@ CREATE TABLE categorias (
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabela de artigos (posts)
-CREATE TABLE artigos (
+-- Tabela de objetoss (posts)
+CREATE TABLE objetos (
     id INT PRIMARY KEY AUTO_INCREMENT,
     titulo VARCHAR(200) NOT NULL,
     conteudo TEXT NOT NULL,
@@ -42,6 +42,6 @@ INSERT INTO usuarios (nome, email, login, senha) VALUES
 
 -- Inserir categorias iniciais
 INSERT INTO categorias (nome, descricao) VALUES 
-('História Antiga', 'Artigos sobre civilizações antigas'),
+('História Antiga', 'objetos sobre civilizações antigas'),
 ('Arqueologia', 'Descobertas e estudos arqueológicos'),
 ('Documentos Históricos', 'Análise de documentos antigos');

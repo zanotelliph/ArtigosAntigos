@@ -1,8 +1,6 @@
 <?php
 
-
 require_once __DIR__ . '/../model/UsuarioModel.php';
-
 
 class Usuario extends Model {
     protected $table = 'usuarios';
@@ -23,10 +21,22 @@ class Usuario extends Model {
     }
 
     public function atualizar($id, $dados) {
-        $query = "UPDATE " . $this->table . " 
-                 SET nome = :nome, telefone = :telefone, email = :email, login = :login 
-                 WHERE id = :id";
-        
+        if (!empty($dados['senha'])) {
+            $query = "UPDATE {$this->table} 
+                      SET nome = :nome, telefone = :telefone, email = :email, login = :login, 
+                          senha = :senha
+                      WHERE id = :id";
+
+            $dados['senha'] = password_hash($dados['senha'], PASSWORD_DEFAULT);
+
+        } else {
+            $query = "UPDATE {$this->table} 
+                      SET nome = :nome, telefone = :telefone, email = :email, login = :login
+                      WHERE id = :id";
+
+            unset($dados['senha']);
+        }
+
         $dados['id'] = $id;
         $stmt = $this->db->prepare($query);
         return $stmt->execute($dados);

@@ -26,7 +26,7 @@ function logout() {
 
 
 if (!isset($title)) {
-    $title = 'Sistema de Artigos Antigos';
+    $title = 'Sistema de Objetos Antigos';
 }
 ?>
 <!DOCTYPE html>
@@ -47,11 +47,11 @@ if (!isset($title)) {
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="index.php">
-                <i class="fas fa-scroll"></i> Artigos Antigos
+                <i class="fas fa-scroll"></i> Objetos Antigos
             </a>
             <div class="navbar-nav ms-auto">
                 <a class="nav-link" href="index.php"><i class="fas fa-home"></i> Início</a>
-                <a class="nav-link" href="../post/PostList.php"><i class="fas fa-newspaper"></i> Artigos</a>
+                <a class="nav-link" href="../post/PostList.php"><i class="fas fa-newspaper"></i> Objetos</a>
                 <a class="nav-link" href="../categoria/CategoriaList.php"><i class="fas fa-tags"></i> Categorias</a>
                 <a class="nav-link" href="../usuario/UsuarioList.php"><i class="fas fa-users"></i> Usuários</a>
                 <a class="nav-link" href="?logout=true"><i class="fas fa-sign-out-alt"></i> Sair</a>

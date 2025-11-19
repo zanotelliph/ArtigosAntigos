@@ -2,10 +2,10 @@
 
 
 class Database {
-  private $host = 'localhost';
-private $db_name = 'objetos_antigos'; 
-private $username = 'root';
-private $password = ''; 
+    private $host = 'localhost';
+    private $db_name = 'objetos_antigos';
+    private $username = 'root';
+    private $password = '';
     public $conn;
 
     public function getConnection() {

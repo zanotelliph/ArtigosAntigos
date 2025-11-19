@@ -5,7 +5,7 @@
 
     <footer class="bg-dark text-light mt-5 py-3">
         <div class="container text-center">
-            <p>&copy; <?php echo date('Y'); ?> Sistema de Artigos Antigos - IFSC</p>
+            <p>&copy; <?php echo date('Y'); ?> Sistema de Objetos Antigos - IFSC</p>
         </div>
     </footer>
     

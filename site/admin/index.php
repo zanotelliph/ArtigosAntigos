@@ -1,7 +1,7 @@
 <?php
 
 
-require_once 'db.class.php';
+require_once __DIR__ . '/db.class.php';
 require_once 'header.php';
 
 redirectIfNotLoggedIn();
@@ -33,7 +33,7 @@ $totalCategorias = $conn->query("SELECT COUNT(*) FROM categorias")->fetchColumn(
 $totalUsuarios = $conn->query("SELECT COUNT(*) FROM usuarios")->fetchColumn();
 ?>
 
-<h2>Dashboard - Sistema de Artigos Antigos</h2>
+<h2>Dashboard - Sistema de Objetos Antigos</h2>
 
 <div class="row mt-4">
     <div class="col-md-4">
