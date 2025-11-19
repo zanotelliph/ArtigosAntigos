@@ -1,5 +1,5 @@
 <?php
-// site/admin/db.class.php
+
 
 class Database {
     private $host = 'localhost';
