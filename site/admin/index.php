@@ -3,7 +3,7 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 
-require_once __DIR__ . '/db.class.php';
+require_once __DIR__ . '/site/database/db.class.php';
 require_once 'header.php';
 
 redirectIfNotLoggedIn();
