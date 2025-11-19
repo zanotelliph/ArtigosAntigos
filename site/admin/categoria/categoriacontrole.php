@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../database/db.class.php';
+require_once _DIR_ . '/../database/db.class.php';
 
 
 class Categoria {
@@ -12,14 +12,14 @@ class Categoria {
     }
 
     public function criar($dados) {
-        $query = "INSERT INTO {$this->table} (nome, descricao) VALUES (:nome, :descricao)";
+        $query = "INSERT INTO {$this->table} (nome, descricao, seculo) VALUES (:nome, :descricao, :seculo)";
         $stmt = $this->db->prepare($query);
         return $stmt->execute($dados);
     }
 
     public function atualizar($id, $dados) {
         $dados['id'] = $id;
-        $query = "UPDATE {$this->table} SET nome = :nome, descricao = :descricao WHERE id = :id";
+        $query = "UPDATE {$this->table} SET nome = :nome, descricao = :descricao, seculo = :seculo WHERE id = :id";
         $stmt = $this->db->prepare($query);
         return $stmt->execute($dados);
     }
